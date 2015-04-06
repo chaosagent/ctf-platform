@@ -36,4 +36,4 @@ if __name__ == '__main__':
     set_up_database()
     register_blueprints()
     set_up_login_manager()
-    app.run()
+    app.run(host='0.0.0.0')

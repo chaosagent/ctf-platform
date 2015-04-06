@@ -1,3 +1,6 @@
+# Not implemented yet
+# TODO: Implement scoreboard
+
 import tools
 
 

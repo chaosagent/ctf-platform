@@ -1,0 +1,8 @@
+CTF_NAME = 'testctf'
+CTF_STANDALONE = True
+USE_HINTS = True
+MAX_TEAM_SIZE = 5
+
+MESSAGE_CORRECT_ANSWER = 'Correct!'
+MESSAGE_INCORRECT_ANSWER = 'Incorrect!'
+MESSAGE_ALREADY_SOLVED = 'Already solved!'

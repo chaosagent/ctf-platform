@@ -5,5 +5,6 @@ Dependencies
 * Flask
 * Flask-Login
 * MongoDB
+* PyMongo
 
 TODO: NEEDS MAJOR CODE CLEANING

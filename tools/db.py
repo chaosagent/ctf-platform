@@ -84,3 +84,10 @@ def refresh_score(team_id):
 
 def get_team_from_name(name):
     return open_collection('teams').find_one({'name': name})
+
+def get_team_id_from_name(name):
+    team = get_team_from_name(name)
+    if team is None:
+        return None
+    else:
+        return team['_id']

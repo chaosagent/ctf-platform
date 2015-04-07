@@ -95,7 +95,7 @@ def join_team(user_id, team_id):
 @login_required
 @tools.api.response
 def public_join_team(name):
-    return join_team(current_user.id, tools.db.get_team_from_name(name)['_id'])
+    return join_team(current_user.id, tools.db.get_team_id_from_name(name))
 
 def login(**params):
     params_check = tools.api.check_params(['identifier', 'password'], **params)
@@ -146,4 +146,4 @@ def get_score_data(team_id):
 @app.route('/api/accounts/get_score_data/<name>', methods=['GET', 'POST'])
 @tools.api.response
 def public_get_score_data(name):
-    return get_score_data(tools.db.get_team_from_name(name)['_id'])
+    return get_score_data(tools.db.get_team_id_from_name(name))

@@ -97,4 +97,4 @@ def is_solved(team_id, problem_id):
 @app.route('/api/problems/is_solved/<name>/<problem_id>', methods=['GET', 'POST'])
 @tools.api.response
 def public_is_solved(name, problem_id):
-    return is_solved(tools.db.get_team_from_name(name)['_id'], problem_id)
+    return is_solved(tools.db.get_team_id_from_name(name), problem_id)

@@ -17,7 +17,7 @@ $(document).ready(function () {
 </script>
 
 <div id="message"></div>
-<form id="login_form" method="post" action="/scoreboard">
+<form id="login_form" method="post" action="{{ url_for('redirect.redirect', next=url_for('page_scoreboard.page_scoreboard')) }}">
     Username or Email: <input type="text" name="identifier" /><br />
     Password: <input type="password" name="password" /><br />
     <button id="login_button" type="button">Log In</button>

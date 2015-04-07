@@ -14,9 +14,9 @@ sys.path.insert(0, os.path.realpath(__file__))
 app = Flask(__name__)
 app.config.from_object(config.flask)
 
-def set_up_database():
-    # tools.db.db.drop_collection('users')
-    # tools.db.db.drop_collection('teams')
+def wipe_database():
+    tools.db.db.drop_collection('users')
+    tools.db.db.drop_collection('teams')
     pass
 
 def register_blueprints():
@@ -33,7 +33,7 @@ def set_up_login_manager():
     login_manager.login_view = 'api_accounts.public_login'
 
 if __name__ == '__main__':
-    set_up_database()
+    # wipe_database()
     register_blueprints()
     set_up_login_manager()
     app.run(host='0.0.0.0')

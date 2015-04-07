@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import time
 
 from flask import Blueprint, request
 from flask_login import login_user, login_required, logout_user, current_user
@@ -7,7 +8,6 @@ from bson.objectid import ObjectId
 import config
 import tools
 from database import problems
-
 
 app = Blueprint('api_accounts', __name__)
 
@@ -62,6 +62,7 @@ def register_team(user_id, **params):
             user_id
         ],
         'score': 0,
+        'last_solve_time': time.time(),
         'solved_problems': {}
     })
     users = tools.db.open_collection('users')

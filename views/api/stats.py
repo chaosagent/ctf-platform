@@ -1,12 +1,16 @@
 # Not implemented yet
 # TODO: Implement scoreboard
 
+from flask import Blueprint
+
 import tools
 
+app = Blueprint('api_stats', __name__)
 
 def scoreboard():
-    solved_colls = tools.db.open_collection('solved').find()
-    # Solo scores for now
-    teams = []
-    for coll in solved_colls:
-        teams.append(())
+    return tools.api.gen_result_success(tools.db.get_scores_list())
+
+@app.route('/api/stats/scoreboard', methods=['GET', 'POST'])
+@tools.api.response
+def public_scoreboard():
+    return scoreboard()

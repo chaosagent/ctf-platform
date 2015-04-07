@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -97,3 +99,18 @@ def get_team_id_from_name(name):
 
 def get_team(team_id):
     return open_collection('teams').find_one({'_id': team_id})
+
+def get_scores_list():
+    teams_collection = open_collection('teams')
+    teams = []
+    for team in teams_collection.find():
+        teams.append((team['name'], team['score'], team['last_solve_time']))
+    teams = sorted(teams, key=lambda x: (-x[1], x[2]))
+    result = []
+    for team in teams:
+        team_info = OrderedDict()
+        team_info['name'] = team[0]
+        team_info['score'] = team[1]
+        team_info['last_solve_time'] = team[2]
+        result.append(team_info)
+    return result

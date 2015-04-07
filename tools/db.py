@@ -114,3 +114,6 @@ def get_scores_list():
         team_info['last_solve_time'] = team[2]
         result.append(team_info)
     return result
+
+def get_team_count(min_score=0):
+    return open_collection('teams').find({'score': {'$gte': min_score}}).count()

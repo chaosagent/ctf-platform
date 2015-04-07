@@ -1,5 +1,4 @@
 # Not implemented yet
-# TODO: Implement scoreboard
 from collections import OrderedDict
 
 from flask import Blueprint, request

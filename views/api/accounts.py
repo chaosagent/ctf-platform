@@ -112,7 +112,7 @@ def login(**params):
         return tools.api.gen_result_fail('Email/username not found')
     if user.password == ':'.join(tools.general.sha512(params['password'], user.username)):
         login_user(user)
-        return tools.api.gen_result_success('Logged in!')
+        return tools.api.gen_result_success(message='Logged in!')
     else:
         return tools.api.gen_result_fail('Incorrect password')
 

@@ -78,11 +78,11 @@ def join_team(user_id, team_id):
     if team_id is None:
         return tools.api.gen_result_fail('Team does not exist!')
     users = tools.db.open_collection('users')
-    user = users.find_one({'_id': ObjectId(user_id)})
+    user = tools.db.get_user(user_id)
     if config.platform.CTF_NAME in user['teams'] and user['teams'][config.platform.CTF_NAME] is not None:
         return tools.api.gen_result_fail('User already in team!')
     teams = tools.db.open_collection('teams')
-    target_team = teams.find_one({'_id': team_id})
+    target_team = tools.db.get_team(team_id)
     if target_team is None:
         return tools.api.gen_result_fail('Team does not exist!')
     if len(target_team['members']) >= config.platform.MAX_TEAM_SIZE:
@@ -133,7 +133,7 @@ def get_score_data(team_id):
     if team_id is None:
         return tools.api.gen_result_fail('Team does not exist!')
     tools.db.refresh_score(team_id)
-    team = tools.db.open_collection('teams').find_one({'_id': team_id})
+    team = tools.db.get_team(team_id)
     result = OrderedDict()
     solved_problems = []
     for i in xrange(len(problems.problems)):

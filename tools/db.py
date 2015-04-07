@@ -62,6 +62,9 @@ def load_user(id):
     else:
         return None
 
+def get_user(user_id):
+    return open_collection('users').find_one({'_id': ObjectId(user_id)})
+
 # Identifier can be email or username
 def load_user_from_identifier(identifier):
     users = open_collection('users')
@@ -91,3 +94,6 @@ def get_team_id_from_name(name):
         return None
     else:
         return team['_id']
+
+def get_team(team_id):
+    return open_collection('teams').find_one({'_id': team_id})

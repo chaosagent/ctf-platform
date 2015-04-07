@@ -55,7 +55,7 @@ def submit_solution(team_id, problem_id, **kwargs):
     if submitted_flag.lower().replace(' ', '') == problem['solution'].lower().replace(' ', ''):
         result['correct'] = True
         teams = tools.db.open_collection('teams')
-        solved = teams.find_one({'_id': team_id})['solved_problems']
+        solved = tools.db.get_team(team_id)['solved_problems']
         if str(problem_id) in solved and solved[str(problem_id)]:
             result['message'] = config.MESSAGE_ALREADY_SOLVED
         else:
@@ -86,7 +86,7 @@ def is_solved(team_id, problem_id):
         return tools.api.gen_result_fail('Invalid problem ID')
     if not problems.problems[int(problem_id)]['enabled']:
         return tools.api.gen_result_fail('Problem disabled')
-    solved = tools.db.open_collection('teams').find_one({'_id': team_id})['solved_problems']
+    solved = tools.db.get_team(team_id)['solved_problems']
     result = {}
     if problem_id in solved and solved[problem_id]:
         result['solved'] = True

@@ -78,9 +78,7 @@ def is_solved(team_id, problem_id):
         return tools.api.gen_result_fail('Team does not exist!')
     if tools.db.load_user(team_id) is None:
         return tools.api.gen_result_fail('User does not exist!')
-    try:
-        int(problem_id)
-    except ValueError:
+    if not tools.general.is_int(problem_id):
         return tools.api.gen_result_fail('ID not an integer')
     if int(problem_id) > len(problems.problems) or int(problem_id) < 0:
         return tools.api.gen_result_fail('Invalid problem ID')

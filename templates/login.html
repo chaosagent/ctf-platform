@@ -1,6 +1,24 @@
-<div id="message" style="background-color: {% if success %} #00ff00 {% else %} #ff0000 {% endif %}">{{ message }}</div>
-<form id="login_form" method="post">
-    <input type="text" name="identifier" />
-    <input type="password" name="password" />
-    <input type="submit" value="Log In" />
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#login_button').click(function () {
+        $.post('/api/accounts/login', $('#login_form').serialize(), function(data) {
+            console.log(data);
+            $('#message').html(data.message);
+            if (data.success) {
+                $('#message').css('background-color', '#00ff00');
+                $('#login_form').submit();
+            } else {
+                $('#message').css('background-color', '#ff0000');
+            }
+        });
+    });
+});
+</script>
+
+<div id="message"></div>
+<form id="login_form" method="post" action="/scoreboard">
+    Username or Email: <input type="text" name="identifier" /><br />
+    Password: <input type="password" name="password" /><br />
+    <button id="login_button" type="button">Log In</button>
 </form>

@@ -2,14 +2,11 @@ import sys
 import os
 import argparse
 
-import jinja2
-
 from flask import Flask
 from flask_login import LoginManager
 
 import config
 import tools
-import views
 
 
 sys.path.insert(0, os.path.realpath(__file__))
@@ -19,9 +16,12 @@ app.config.from_object(config.flask)
 
 args = None
 
+def set_up_db():
+    app.db = tools.db.open_database()
+
 def wipe_database():
-    tools.db.db.drop_collection('users')
-    tools.db.db.drop_collection('teams')
+    app.db.drop_collection('users')
+    app.db.db.drop_collection('teams')
     pass
 
 def register_blueprints():
@@ -34,8 +34,8 @@ def set_up_login_manager():
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.user_loader(tools.db.load_user)
-    login_manager.unauthorized_handler(views.api.accounts.public_not_logged_in)
     login_manager.login_view = 'api_accounts.public_login'
+    login_manager.unauthorized_handler(tools.general.public_not_logged_in)
 
 def handle_args():
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -49,6 +49,7 @@ def handle_args():
 
 if __name__ == '__main__':
     handle_args()
+    set_up_db()
     if args.wipe_db:
         wipe_database()
     if args.debug:

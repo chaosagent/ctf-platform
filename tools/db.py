@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+from flask import current_app
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -10,11 +12,9 @@ from database import problems
 def open_database():
     return MongoClient('localhost', 27017)[config.db.DATABASE_NAME]
 
-db = open_database()
-
 def open_collection(collection, database=None):
     if database is None:
-        database = db
+        database = current_app.db
     return database[collection]
 
 class User:

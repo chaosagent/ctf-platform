@@ -1,6 +1,7 @@
 import time
 
 from flask import Blueprint, request
+
 from flask_login import login_user, login_required, logout_user, current_user
 from bson.objectid import ObjectId
 
@@ -121,14 +122,10 @@ def public_login():
 
 def logout():
     logout_user()
-    return tools.api.gen_result_success()
+    return tools.api.gen_result_success(message='Logged out.')
 
 @app.route('/api/accounts/logout', methods=['GET', 'POST'])
 @login_required
 @tools.api.response
 def public_logout():
     return logout()
-
-@tools.api.response
-def public_not_logged_in():
-    return tools.api.gen_result_unauthorized()

@@ -74,7 +74,11 @@ def register_team(user_id, **params):
 def public_register_team():
     return register_team(current_user.id, **tools.general.unpack_request_data(**request.form))
 
-def join_team(user_id, team_id):
+def join_team(user_id, **params):
+    params_check = tools.api.check_params(['name'], **params)
+    if not params_check['success']:
+        return params_check['result']
+    team_id = tools.db.get_team_id_from_name(params['name'])
     if team_id is None:
         return tools.api.gen_result_fail('Team does not exist!')
     users = tools.db.open_collection('users')
@@ -91,11 +95,11 @@ def join_team(user_id, team_id):
     users.update({'_id': ObjectId(user_id)}, {'$set': {'teams.%s' % config.platform.CTF_NAME: team_id}})
     return tools.api.gen_result_success({'team_id': team_id})
 
-@app.route('/api/accounts/join_team/<name>', methods=['POST'])
+@app.route('/api/accounts/join_team', methods=['POST'])
 @login_required
 @tools.api.response
-def public_join_team(name):
-    return join_team(current_user.id, tools.db.get_team_id_from_name(name))
+def public_join_team():
+    return join_team(current_user.id, **tools.general.unpack_request_data(**request.form))
 
 def login(**params):
     params_check = tools.api.check_params(['identifier', 'password'], **params)

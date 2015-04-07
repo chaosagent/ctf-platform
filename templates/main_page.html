@@ -1,0 +1,36 @@
+<script src='//code.jquery.com/jquery-1.11.2.min.js'></script>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>
+<style>
+    div.center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    div.bigtext {
+        font-size: 10em;
+        font-family: 'Roboto Slab', serif;
+        font-weight: 300;
+    }
+    div.mediumtext {
+        font-size: 1em;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+    }
+</style>
+<script type='text/javascript'>
+	$(document).ready(function() {
+		viewportheight = $(window).height();
+		$('#content').height(viewportheight);
+		$(window).resize(function() {
+			viewportheight = $(window).height();
+			$('#content').height(viewportheight);
+		});
+	});
+
+</script>
+<div id='content' class='center'>
+    <div class='bigtext'>chaosCTF</div>
+    <div class='mediumtext'>Registered Teams: {{ team_count }}</div>
+</div>

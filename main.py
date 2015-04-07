@@ -1,5 +1,6 @@
 import sys
 import os
+import argparse
 
 import jinja2
 
@@ -15,6 +16,8 @@ sys.path.insert(0, os.path.realpath(__file__))
 
 app = Flask(__name__)
 app.config.from_object(config.flask)
+
+args = None
 
 def wipe_database():
     tools.db.db.drop_collection('users')
@@ -38,8 +41,22 @@ def set_up_jinja_loader():
     my_loader = jinja2.FileSystemLoader('frontend/templates')
     app.jinja_loader = my_loader
 
+def handle_args():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--debug', dest='debug', action='store_const', const=True, default=False,
+                        help='Use Flask debug mode')
+    parser.add_argument('--wipe-db', dest='wipe_db', action='store_const', const=True, default=False,
+                        help='Wipe database on startup')
+    global args
+    args = parser.parse_args()
+
+
 if __name__ == '__main__':
-    # wipe_database()
+    handle_args()
+    if args.wipe_db:
+        wipe_database()
+    if args.debug:
+        app.debug = True
     register_blueprints()
     set_up_login_manager()
     set_up_jinja_loader()

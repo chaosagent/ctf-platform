@@ -75,6 +75,8 @@ def public_register_team():
     return register_team(current_user.id, **tools.general.unpack_request_data(**request.form))
 
 def join_team(user_id, team_id):
+    if team_id is None:
+        return tools.api.gen_result_fail('Team does not exist!')
     users = tools.db.open_collection('users')
     user = users.find_one({'_id': ObjectId(user_id)})
     if config.platform.CTF_NAME in user['teams'] and user['teams'][config.platform.CTF_NAME] is not None:

@@ -1,6 +1,8 @@
 import sys
 import os
 
+import jinja2
+
 from flask import Flask
 from flask_login import LoginManager
 
@@ -32,8 +34,13 @@ def set_up_login_manager():
     login_manager.unauthorized_handler(views.api.accounts.public_not_logged_in)
     login_manager.login_view = 'api_accounts.public_login'
 
+def set_up_jinja_loader():
+    my_loader = jinja2.FileSystemLoader('frontend/templates')
+    app.jinja_loader = my_loader
+
 if __name__ == '__main__':
     # wipe_database()
     register_blueprints()
     set_up_login_manager()
+    set_up_jinja_loader()
     app.run(host='0.0.0.0')

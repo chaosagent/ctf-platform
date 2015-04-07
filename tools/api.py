@@ -8,6 +8,7 @@ import tools
 
 
 
+
 # Decorator for api_response
 # Apparently flask needs unique function names, so this is temporarily disabled.
 def response(func):
@@ -29,7 +30,9 @@ def gen_result_missing_param(params):
 def gen_result_success(data=None):
     result = OrderedDict([
         ('success', True)])
-    if data is not None:
+    if type(data) == str:
+        result['message'] = data
+    elif data is not None:
         result['data'] = data
     return result
 

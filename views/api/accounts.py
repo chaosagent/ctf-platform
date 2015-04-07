@@ -9,6 +9,7 @@ import config
 import tools
 from database import problems
 
+
 app = Blueprint('api_accounts', __name__)
 
 def register(**params):
@@ -111,14 +112,14 @@ def login(**params):
         return tools.api.gen_result_fail('Email/username not found')
     if user.password == ':'.join(tools.general.sha512(params['password'], user.username)):
         login_user(user)
-        return tools.api.gen_result_success()
+        return tools.api.gen_result_success('Logged in!')
     else:
         return tools.api.gen_result_fail('Incorrect password')
 
-@app.route('/api/accounts/login', methods=['GET', 'POST'])
+@app.route('/api/accounts/login', methods=['POST'])
 @tools.api.response
 def public_login():
-    return login(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))
+    return login(**tools.general.unpack_request_data(**request.form))
 
 def logout():
     logout_user()

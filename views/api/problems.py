@@ -72,19 +72,21 @@ def submit_solution(team_id, **params):
         return tools.api.gen_result_fail('User is not in a team!')
     submitted_flag = params['flag']
     result = OrderedDict()
-    # Allow for spacing/case deviations
     if tools.general.check_solution(submitted_flag, problem['solution']):
         result['correct'] = True
         teams = tools.db.open_collection('teams')
         solved = tools.db.get_team(team_id)['solved_problems']
         if str(problem_id) in solved and solved[str(problem_id)]:
+            result['points_awarded'] = 0
             result['message'] = config.MESSAGE_ALREADY_SOLVED
         else:
             teams.update({'_id': team_id}, {'$set': {'solved_problems.%s' % str(problem_id): True}})
             tools.db.refresh_score(team_id)
+            result['points_awarded'] = problem['value']
             result['message'] = config.MESSAGE_CORRECT_ANSWER
     else:
         result['correct'] = False
+        result['points_awarded'] = 0
         result['message'] = config.MESSAGE_INCORRECT_ANSWER
     return tools.api.gen_result_success(result)
 

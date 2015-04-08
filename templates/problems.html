@@ -1,10 +1,42 @@
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.submit_flag_button').click(function () {
+        var button = $(this);
+        $.post('{{ url_for('api_problems.public_submit_solution') }}', {
+            'problem_id': $(this).siblings('.problem_id').html(),
+            'flag': $(this).siblings('.flag_input').val()
+        }, function(data) {
+            message = button.siblings('.message');
+            if (!data.success) {
+                message.html(data.message);
+                message.css('background-color', '#ff0000');
+            } else {
+                message.html(data.data.message);
+                if (data.data.points_awarded > 0) {
+                    message.css('background-color', '#00ff00');
+                } else {
+                    message.css('background-color', '#ff0000');
+                }
+            }
+            setTimeout(function () {
+                message.html('');
+                message.css('background-color', '');
+            }, 1000);
+        });
+    });
+});
+</script>
 {%- for problem in problems['data'] -%}
 <div class='problem'>
+    <div class='problem_id' style='display: none'>{{ problem['id'] }}</div>
+    <div class='message'></div>
     {{ problem['name'] }}<br />
     {%- if use_hints -%}
     {{ problem['value'] }} points<br />
     {% endif %}
     {{ problem['statement'] }}<br />
-    Hint: {{ problem['hint'] }}
+    Hint: {{ problem['hint'] }}<br />
+    <input class='flag_input' type='text' /><button class="submit_flag_button" type="button">Submit</button>
 </div>
 {% endfor %}

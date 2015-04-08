@@ -21,7 +21,7 @@ problems = add_ids([
         'name': 'l33t',
         'value': 10,
         'statement': 'What is my name, but more?',
-        'hint': 'w0w',
+        'hint': 'I am a problem',
         'solution': '1337'
     }
 ])

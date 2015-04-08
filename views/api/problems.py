@@ -15,12 +15,13 @@ def get_problem(problem_id):
         problem_id = int(problem_id)
     except ValueError:
         return tools.api.gen_result_fail('ID not an integer')
-    if problem_id > len(problems.problems) or problem_id < 0:
+    problem = tools.db.get_problem(problem_id)
+    if problem is None:
         return tools.api.gen_result_fail('Invalid problem ID')
-    if not problems.problems[problem_id]['enabled']:
+    if not problem['enabled']:
         return tools.api.gen_result_fail('Problem disabled')
-    problem = problems.problems[problem_id]
     result = OrderedDict([
+        ('id', problem['id']),
         ('name', problem['name']),
         ('value', problem['value']),
         ('statement', problem['statement'])
@@ -37,7 +38,10 @@ def public_get_problem(problem_id):
 def get_all_problems():
     result = []
     for problem in problems.problems:
+        if not problem['enabled']:
+            continue
         filtered_problem = OrderedDict({
+            ('id', problem['id']),
             ('name', problem['name']),
             ('value', problem['value']),
             ('statement', problem['statement'])
@@ -57,9 +61,10 @@ def submit_solution(team_id, problem_id, **kwargs):
         problem_id = int(problem_id)
     except ValueError:
         return tools.api.gen_result_fail('ID not an integer')
-    if problem_id > len(problems.problems) or problem_id < 0:
+    problem = tools.db.get_problem(problem_id)
+    if problem is None:
         return tools.api.gen_result_fail('Invalid problem ID')
-    if not problems.problems[problem_id]['enabled']:
+    if not problem['enabled']:
         return tools.api.gen_result_fail('Problem disabled')
     if team_id is None:
         return tools.api.gen_result_fail('User is not in a team!')
@@ -67,7 +72,6 @@ def submit_solution(team_id, problem_id, **kwargs):
     if not params_check['success']:
         return params_check['result']
     submitted_flag = kwargs['flag']
-    problem = problems.problems[problem_id]
     result = OrderedDict()
     # Allow for spacing/case deviations
     if submitted_flag.lower().replace(' ', '') == problem['solution'].lower().replace(' ', ''):
@@ -98,9 +102,10 @@ def is_solved(team_id, problem_id):
         return tools.api.gen_result_fail('User does not exist!')
     if not tools.general.is_int(problem_id):
         return tools.api.gen_result_fail('ID not an integer')
-    if int(problem_id) > len(problems.problems) or int(problem_id) < 0:
+    problem = tools.db.get_problem(int(problem_id))
+    if problem is None:
         return tools.api.gen_result_fail('Invalid problem ID')
-    if not problems.problems[int(problem_id)]['enabled']:
+    if not problem['enabled']:
         return tools.api.gen_result_fail('Problem disabled')
     solved = tools.db.get_team(team_id)['solved_problems']
     result = {}

@@ -16,12 +16,15 @@ app.config.from_object(config.flask)
 
 args = None
 
+db = tools.db.open_database()
+
 def set_up_db():
-    app.db = tools.db.open_database()
+    tools.db.refresh_all_scores(db=db)
+    app.db = db
 
 def wipe_database():
-    app.db.drop_collection('users')
-    app.db.db.drop_collection('teams')
+    db.drop_collection('users')
+    db.db.drop_collection('teams')
     pass
 
 def register_blueprints():

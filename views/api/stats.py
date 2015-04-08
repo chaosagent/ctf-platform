@@ -4,7 +4,6 @@ from collections import OrderedDict
 from flask import Blueprint, request
 
 from database import problems
-
 import tools
 
 app = Blueprint('api_stats', __name__)
@@ -37,7 +36,8 @@ def get_score_data(team_id):
     result = OrderedDict()
     solved_problems = []
     for i in xrange(len(problems.problems)):
-        if str(i) in team['solved_problems'] and team['solved_problems'][str(i)]:
+        if problems.problems[i]['enabled'] and str(problems.problems[i]['id']) in team['solved_problems'] and \
+                team['solved_problems'][str(problems.problems[i]['id'])]:
             solved_problems.append(problems.problems[i]['name'])
     result['score'] = team['score']
     result['solved'] = solved_problems

@@ -36,7 +36,7 @@ def register(**params):
     result = {
         'user_id': user_id
     }
-    return tools.api.gen_result_success(result)
+    return tools.api.gen_result_success(result, message="Registration successful.")
 
 @app.route('/api/accounts/register', methods=['POST'])
 @tools.api.response

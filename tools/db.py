@@ -83,7 +83,8 @@ def refresh_score(team_id, db=None):
     original_score = team['score']
     score = 0
     for (problem_id, problem_solved) in dict(team['solved_problems']).iteritems():
-        if team['solved_problems'][problem_id] and get_problem(int(problem_id))['enabled']:
+        problem = get_problem(int(problem_id))
+        if problem is not None and problem['enabled'] and team['solved_problems'][problem_id]:
             score += get_problem(int(problem_id))['value']
     if score != original_score:
         teams.update({'_id': team_id}, {'$set': {'score': score}})
@@ -123,8 +124,6 @@ def get_problem(problem_id):
     for problem in problems.problems:
         if problem['id'] == problem_id:
             return problem
-    # Someone killed the problem
-    return {'enabled': False}
 
 def refresh_all_scores(db=None):
     for team in open_collection('teams', database=db).find():

@@ -3,7 +3,6 @@
 $(document).ready(function () {
     $('#login_button').click(function () {
         $.post('/api/accounts/login', $('#login_form').serialize(), function(data) {
-            console.log(data);
             $('#message').html(data.message);
             if (data.success) {
                 $('#message').css('background-color', '#00ff00');

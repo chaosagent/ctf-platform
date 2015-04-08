@@ -7,6 +7,7 @@ from flask_login import LoginManager
 
 import config
 import tools
+from tools.accounts import public_not_logged_in
 
 
 sys.path.insert(0, os.path.realpath(__file__))
@@ -38,7 +39,7 @@ def set_up_login_manager():
     login_manager.init_app(app)
     login_manager.user_loader(tools.db.load_user)
     login_manager.login_view = 'api_accounts.public_login'
-    login_manager.unauthorized_handler(tools.general.public_not_logged_in)
+    login_manager.unauthorized_handler(public_not_logged_in)
 
 def handle_args():
     parser = argparse.ArgumentParser(description='Process some integers.')

@@ -1,9 +1,5 @@
 import hashlib
 
-from flask import redirect, url_for, request
-
-import tools
-
 
 def get_dictionary_items(dict, items):
     result = {}
@@ -47,12 +43,6 @@ def is_int(string):
     except ValueError:
         return False
     return True
-
-def public_not_logged_in():
-    if request.path.split('/')[1] == 'api':
-        return tools.api.api_response(tools.api.gen_result_unauthorized())
-    else:
-        return redirect(url_for('page_login.page_login'))
 
 def check_solution(submitted, answer):
     return remove_from_string(submitted.lower(), [' ']) == remove_from_string(answer.lower(), [' '])

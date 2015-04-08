@@ -27,6 +27,20 @@ $(document).ready(function () {
     });
 });
 </script>
+<style>
+    div.banner {
+        background-color: #f00;
+    }
+</style>
+{%- if not user_authenticated -%}
+<div class="banner">
+    Log in to submit flags!
+</div>
+{%- elif not user_in_team -%}
+<div class="banner">
+    Join a team to submit flags!
+</div>
+{%- endif -%}
 {%- for problem in problems['data'] -%}
 <div class='problem'>
     <div class='problem_id' style='display: none'>{{ problem['id'] }}</div>
@@ -37,6 +51,9 @@ $(document).ready(function () {
     {% endif %}
     {{ problem['statement'] }}<br />
     Hint: {{ problem['hint'] }}<br />
-    <input class='flag_input' type='text' /><button class="submit_flag_button" type="button">Submit</button>
+    {%- if user_in_team -%}
+    <input class='flag_input' type='text' />
+    <button class="submit_flag_button" type="button">Submit</button>
+    {% endif %}
 </div>
 {% endfor %}

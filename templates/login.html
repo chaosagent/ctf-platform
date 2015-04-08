@@ -2,7 +2,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $('#login_button').click(function () {
-        $.post('/api/accounts/login', $('#login_form').serialize(), function(data) {
+        $.post('{{ url_for('api_accounts.public_login') }}', $('#login_form').serialize(), function(data) {
             $('#message').html(data.message);
             if (data.success) {
                 $('#message').css('background-color', '#00ff00');

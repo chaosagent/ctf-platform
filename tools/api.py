@@ -7,8 +7,6 @@ from flask import Response
 import tools
 
 
-# Decorator for api_response
-# Apparently flask needs unique function names, so this is temporarily disabled.
 def response(func):
     @wraps(func)
     def wrapper(*args, **kwargs):

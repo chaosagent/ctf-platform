@@ -52,4 +52,4 @@ def public_not_logged_in():
     if request.path.split('/')[1] == 'api':
         return tools.api.api_response(tools.api.gen_result_unauthorized())
     else:
-        redirect(url_for('.page_login'))
+        return redirect(url_for('page_login.page_login'))

@@ -34,6 +34,24 @@ def get_problem(problem_id):
 def public_get_problem(problem_id):
     return get_problem(problem_id)
 
+def get_all_problems():
+    result = []
+    for problem in problems.problems:
+        filtered_problem = OrderedDict({
+            ('name', problem['name']),
+            ('value', problem['value']),
+            ('statement', problem['statement'])
+        })
+        if config.USE_HINTS:
+            filtered_problem['hint'] = problem['hint']
+        result.append(filtered_problem)
+    return tools.api.gen_result_success(result)
+
+@app.route('/api/problems/get/', methods=['GET', 'POST'])
+@tools.api.response
+def public_get_all_problems():
+    return get_all_problems()
+
 def submit_solution(team_id, problem_id, **kwargs):
     try:
         problem_id = int(problem_id)

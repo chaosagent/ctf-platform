@@ -1,0 +1,10 @@
+{%- for problem in problems['data'] -%}
+<div class='problem'>
+    {{ problem['name'] }}<br />
+    {%- if use_hints -%}
+    {{ problem['value'] }} points<br />
+    {% endif %}
+    {{ problem['statement'] }}<br />
+    Hint: {{ problem['hint'] }}
+</div>
+{% endfor %}

@@ -46,6 +46,9 @@ def handle_args():
     global args
     args = parser.parse_args()
 
+def set_up_jinja():
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
 
 if __name__ == '__main__':
     handle_args()
@@ -56,4 +59,5 @@ if __name__ == '__main__':
         app.debug = True
     register_blueprints()
     set_up_login_manager()
+    set_up_jinja()
     app.run(host='0.0.0.0')

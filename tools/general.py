@@ -53,3 +53,6 @@ def public_not_logged_in():
         return tools.api.api_response(tools.api.gen_result_unauthorized())
     else:
         return redirect(url_for('page_login.page_login'))
+
+def check_solution(submitted, answer):
+    return remove_from_string(submitted.lower(), [' ']) == remove_from_string(answer.lower(), [' '])

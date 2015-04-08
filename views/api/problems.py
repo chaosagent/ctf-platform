@@ -74,7 +74,7 @@ def submit_solution(team_id, problem_id, **kwargs):
     submitted_flag = kwargs['flag']
     result = OrderedDict()
     # Allow for spacing/case deviations
-    if submitted_flag.lower().replace(' ', '') == problem['solution'].lower().replace(' ', ''):
+    if tools.general.check_solution(submitted_flag, problem['solution']):
         result['correct'] = True
         teams = tools.db.open_collection('teams')
         solved = tools.db.get_team(team_id)['solved_problems']

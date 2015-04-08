@@ -30,11 +30,6 @@ def get_problem(problem_id):
         result['hint'] = problem['hint']
     return tools.api.gen_result_success(result)
 
-@app.route('/api/problems/get/<problem_id>', methods=['GET', 'POST'])
-@tools.api.response
-def public_get_problem(problem_id):
-    return get_problem(problem_id)
-
 def get_all_problems():
     result = []
     for problem in problems.problems:
@@ -51,12 +46,19 @@ def get_all_problems():
         result.append(filtered_problem)
     return tools.api.gen_result_success(result)
 
-@app.route('/api/problems/get/', methods=['GET', 'POST'])
+@app.route('/api/problems/get', methods=['GET', 'POST'])
 @tools.api.response
-def public_get_all_problems():
-    return get_all_problems()
+def public_get_problem():
+    if 'problem_id' in request.args:
+        return get_problem(request.args['problem_id'] if request.method == 'GET' else request.form['problem_id'])
+    else:
+        return get_all_problems()
 
-def submit_solution(team_id, problem_id, **kwargs):
+def submit_solution(team_id, **params):
+    params_check = tools.api.check_params(['problem_id', 'flag'], **params)
+    if not params_check['success']:
+        return params_check['result']
+    problem_id = params['problem_id']
     try:
         problem_id = int(problem_id)
     except ValueError:
@@ -68,10 +70,7 @@ def submit_solution(team_id, problem_id, **kwargs):
         return tools.api.gen_result_fail('Problem disabled')
     if team_id is None:
         return tools.api.gen_result_fail('User is not in a team!')
-    params_check = tools.api.check_params(['flag'], **kwargs)
-    if not params_check['success']:
-        return params_check['result']
-    submitted_flag = kwargs['flag']
+    submitted_flag = params['flag']
     result = OrderedDict()
     # Allow for spacing/case deviations
     if tools.general.check_solution(submitted_flag, problem['solution']):
@@ -89,17 +88,19 @@ def submit_solution(team_id, problem_id, **kwargs):
         result['message'] = config.MESSAGE_INCORRECT_ANSWER
     return tools.api.gen_result_success(result)
 
-@app.route('/api/problems/submit/<problem_id>', methods=['POST'])
+@app.route('/api/problems/submit', methods=['POST'])
 @login_required
 @tools.api.response
-def public_submit_solution(problem_id):
-    return submit_solution(current_user.get_team(), problem_id, **tools.general.unpack_request_data(**request.form))
+def public_submit_solution():
+    return submit_solution(current_user.get_team(), **tools.general.unpack_request_data(**request.form))
 
-def is_solved(team_id, problem_id):
-    if team_id is None:
+def is_solved(**params):
+    params_check = tools.api.check_params(['team', 'problem_id'], **params)
+    if not params_check['success']:
+        return params_check['result']
+    team, problem_id = tools.db.get_team_from_name(params['team']), params['problem_id']
+    if team is None:
         return tools.api.gen_result_fail('Team does not exist!')
-    if tools.db.load_user(team_id) is None:
-        return tools.api.gen_result_fail('User does not exist!')
     if not tools.general.is_int(problem_id):
         return tools.api.gen_result_fail('ID not an integer')
     problem = tools.db.get_problem(int(problem_id))
@@ -107,7 +108,7 @@ def is_solved(team_id, problem_id):
         return tools.api.gen_result_fail('Invalid problem ID')
     if not problem['enabled']:
         return tools.api.gen_result_fail('Problem disabled')
-    solved = tools.db.get_team(team_id)['solved_problems']
+    solved = team['solved_problems']
     result = {}
     if problem_id in solved and solved[problem_id]:
         result['solved'] = True
@@ -115,7 +116,7 @@ def is_solved(team_id, problem_id):
         result['solved'] = False
     return tools.api.gen_result_success(result)
 
-@app.route('/api/problems/is_solved/<name>/<problem_id>', methods=['GET', 'POST'])
+@app.route('/api/problems/is_solved', methods=['GET', 'POST'])
 @tools.api.response
-def public_is_solved(name, problem_id):
-    return is_solved(tools.db.get_team_id_from_name(name), problem_id)
+def public_is_solved():
+    return is_solved(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))

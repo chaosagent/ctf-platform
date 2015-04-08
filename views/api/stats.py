@@ -28,11 +28,14 @@ def team_count(min_score=0):
 def public_team_count():
     return team_count(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))
 
-def get_score_data(team_id):
-    if team_id is None:
+def get_score_data(**params):
+    params_check = tools.api.check_params(['team'], **params)
+    if not params_check['success']:
+        return params_check['result']
+    team = tools.db.get_team_from_name(params['team'])
+    if team is None:
         return tools.api.gen_result_fail('Team does not exist!')
-    tools.db.refresh_score(team_id)
-    team = tools.db.get_team(team_id)
+    tools.db.refresh_score(team['_id'])
     result = OrderedDict()
     solved_problems = []
     for i in xrange(len(problems.problems)):
@@ -43,7 +46,7 @@ def get_score_data(team_id):
     result['solved'] = solved_problems
     return tools.api.gen_result_success(result)
 
-@app.route('/api/stats/get_score_data/<name>', methods=['GET', 'POST'])
+@app.route('/api/stats/get_score_data', methods=['GET', 'POST'])
 @tools.api.response
-def public_get_score_data(name):
-    return get_score_data(tools.db.get_team_id_from_name(name))
+def public_get_score_data():
+    return get_score_data(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))

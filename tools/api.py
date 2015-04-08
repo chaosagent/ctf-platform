@@ -10,6 +10,7 @@ import tools
 
 
 
+
 # Decorator for api_response
 # Apparently flask needs unique function names, so this is temporarily disabled.
 def response(func):
@@ -53,7 +54,7 @@ def gen_result_unauthorized():
 def check_params(reqparams, **kwargs):
     missing_params = []
     for param in reqparams:
-        if param not in kwargs:
+        if param not in kwargs or kwargs[param] == '':
             missing_params.append(param)
     if len(missing_params) > 0:
         return {

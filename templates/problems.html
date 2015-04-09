@@ -4,6 +4,9 @@ $(document).ready(function () {
     $('.submit_flag_button').click(function () {
         var button = $(this);
         var flag_input = $(this).siblings('.flag_input')
+        if (flag_input.val() === '') {
+            return;
+        }
         $.post('{{ url_for('api_problems.public_submit_solution') }}', {
             'problem_id': $(this).siblings('.problem_id').html(),
             'flag': flag_input.val()

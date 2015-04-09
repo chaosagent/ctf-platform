@@ -34,6 +34,11 @@ $(document).ready(function () {
         background-color: #f00;
     }
 </style>
+{%- if g.competition_ended -%}
+<div class="banner">
+    Competition ended!
+</div>
+{%- endif -%}
 {%- if not user_authenticated -%}
 <div class="banner">
     Log in to submit flags!
@@ -53,7 +58,7 @@ $(document).ready(function () {
     {% endif %}
     {{ problem['statement'] }}<br />
     Hint: {{ problem['hint'] }}<br />
-    {%- if user_in_team -%}
+    {%- if user_in_team and g.competition_active -%}
     <input class='flag_input' type='text' />
     <button class="submit_flag_button" type="button">Submit</button>
     {% endif %}

@@ -1,4 +1,7 @@
 import hashlib
+import time
+
+import config
 
 
 def get_dictionary_items(dict, items):
@@ -46,3 +49,20 @@ def is_int(string):
 
 def check_solution(submitted, answer):
     return remove_from_string(submitted.lower(), [' ']) == remove_from_string(answer.lower(), [' '])
+
+def competition_state():
+    if time.time() < config.platform.COMPETITION_START_TIME:
+        return -1
+    elif time.time() <= config.platform.COMPETITION_END_TIME:
+        return 0
+    else:
+        return 1
+
+def competition_active():
+    return competition_state() == 0
+
+def competition_started():
+    return competition_state() >= 0
+
+def competition_ended():
+    return competition_state() == 1

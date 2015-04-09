@@ -22,3 +22,21 @@ def api_test2(args):
 @tools.api.response
 def public_api_test2():
     return api_test2(request.args if request.method == 'GET' else request.form)
+
+def competition_state():
+    state = tools.general.competition_state()
+    data = {'state': state}
+    if state == -1:
+        data['message'] = 'Competition has not begun'
+    elif state == 0:
+        data['message'] = 'Competition active'
+    elif state == 1:
+        data['message'] = 'Competition has ended'
+    else:
+        data['message'] = 'Unknown state'
+    return tools.api.gen_result_success(data)
+
+@app.route('/api/competition_state', methods=['GET', 'POST'])
+@tools.api.response
+def public_competition_state():
+    return competition_state()

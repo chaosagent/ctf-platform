@@ -10,6 +10,7 @@ from database import problems
 
 app = Blueprint('api_problems', __name__)
 
+@tools.api.competition_started_required
 def get_problem(problem_id):
     try:
         problem_id = int(problem_id)
@@ -30,6 +31,7 @@ def get_problem(problem_id):
         result['hint'] = problem['hint']
     return tools.api.gen_result_success(result)
 
+@tools.api.competition_started_required
 def get_all_problems():
     result = []
     for problem in problems.problems:
@@ -54,6 +56,7 @@ def public_get_problem():
     else:
         return get_all_problems()
 
+@tools.api.competition_active_required
 def submit_solution(team_id, **params):
     params_check = tools.api.check_params(['problem_id', 'flag'], **params)
     if not params_check['success']:
@@ -96,6 +99,7 @@ def submit_solution(team_id, **params):
 def public_submit_solution():
     return submit_solution(current_user.get_team(), **tools.general.unpack_request_data(**request.form))
 
+@tools.api.competition_started_required
 def is_solved(**params):
     params_check = tools.api.check_params(['team', 'problem_id'], **params)
     if not params_check['success']:

@@ -1,0 +1,30 @@
+{%- extends "frame.html" -%}
+{%- block head -%}
+    {{ super() }}
+    <style>
+        .bigtext {
+            font-size: 5em;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+{%- block title -%}
+{%- if not g.competition_started -%}
+    Competition Not Started
+{%- elif g.competition_ended -%}
+    Competition Ended
+{%- else -%}
+    Competition Inactive
+{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="bigtext">
+        {%- if not g.competition_started -%}
+            Competition has not begun yet!
+        {%- elif g.competition_ended -%}
+            Competition ended!
+        {%- else -%}
+            Competition inactive!
+        {% endif %}
+    </div>
+{% endblock %}

@@ -45,6 +45,12 @@ def gen_result_unavailable():
 def gen_result_unauthorized():
     return gen_result_fail('You are not logged in')
 
+def gen_result_competition_ended():
+    return gen_result_fail('Competition ended')
+
+def gen_result_competition_not_started():
+    return gen_result_fail('Competition has not started yet')
+
 def check_params(reqparams, **kwargs):
     missing_params = []
     for param in reqparams:
@@ -59,3 +65,23 @@ def check_params(reqparams, **kwargs):
 
 def is_valid_username(username):
     return tools.general.remove_from_string(username, ['.', '-', '_']).isalnum()
+
+def competition_active_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if tools.general.competition_state() == -1:
+            return gen_result_competition_not_started()
+        elif tools.general.competition_state() == 1:
+            return gen_result_competition_ended()
+        else:
+            return func(*args, **kwargs)
+    return wrapper
+
+def competition_started_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not tools.general.competition_started():
+            return gen_result_competition_not_started()
+        else:
+            return func(*args, **kwargs)
+    return wrapper

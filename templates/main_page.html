@@ -27,21 +27,21 @@
             color: #ccc;
         }
     </style>
-<script type="text/javascript">
-	$(document).ready(function() {
-		viewportheight = $(window).height();
-		navbarheight = $('#navbarplaceholder').height();
-		$('#banner').height(viewportheight - navbarheight);
-		$(window).resize(function() {
-			viewportheight = $(window).height();
-			$('#banner').height(viewportheight - navbarheight);
-		});
-	});
-</script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            viewportheight = $(window).height();
+            navbarheight = $('#navbarplaceholder').height();
+            $('#banner').height(viewportheight - navbarheight);
+            $(window).resize(function() {
+                viewportheight = $(window).height();
+                $('#banner').height(viewportheight - navbarheight);
+            });
+        });
+    </script>
 {%- endblock -%}
 {%- block title -%}Homepage{% endblock %}
 {%- block navbar_unauthed_home -%}#{% endblock %}
-{%- block content -%}
+{% block content %}
     <div id="banner" class="center">
         <div id="ctf_name" class="bigtext">chaosCTF</div>
         <div id="registered_teams" class="mediumtext">Registered Teams: {{ team_count }}</div>

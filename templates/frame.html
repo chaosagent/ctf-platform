@@ -9,8 +9,8 @@
     {% endblock %}
 </head>
 <body>
-    {%- block navbar -%}
-    {%- block navbar_unauthed -%}
+    {% block navbar %}
+    {% block navbar_unauthed %}
     <div id="navbar" class="navbar">
         <div id="navbarlist">
             <ul id="navbarlist_unauthed_left" class="navbar inline">
@@ -27,7 +27,7 @@
     <div id="navbarplaceholder" class="navbarplaceholder placeholder"></div>
     {% endblock %}
     <div id="content">
-        {%- block content -%}
+        {% block content %}
         {% endblock %}
     </div>
 </body>

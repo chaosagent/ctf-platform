@@ -7,7 +7,8 @@ import main_page
 import register
 import problems
 import logout
+import team
 
 
 app = Blueprint('pages', __name__)
-to_register = tools.general.get_reg_list([login, scoreboard, main_page, register, problems, logout])
+to_register = tools.general.get_reg_list([login, scoreboard, main_page, register, problems, logout, team])

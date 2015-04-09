@@ -1,0 +1,38 @@
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<style>
+    div.banner {
+        background-color: #f00;
+    }
+</style>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#button_join_team').click(function () {
+        $.post('{{ url_for('api_accounts.public_join_team') }}', {'name': $('#input_join_team').val()}, function(data) {
+            $('#message').html(data.message);
+            if (data.success) {
+                $('#message').css('background-color', '#00ff00');
+                location.reload(true);
+            } else {
+                $('#message').css('background-color', '#ff0000');
+            }
+        });
+    });
+    $('#button_create_team').click(function () {
+        $.post('{{ url_for('api_accounts.public_create_team') }}', {'name': $('#input_create_team').val()}, function(data) {
+            $('#message').html(data.message);
+            if (data.success) {
+                $('#message').css('background-color', '#00ff00');
+                location.reload(true);
+            } else {
+                $('#message').css('background-color', '#ff0000');
+            }
+        });
+    });
+});
+</script>
+<div id='join_create_team'>
+<div class='banner'>You are not in a team!</div>
+<div id='message'></div>
+<input id='input_join_team' type='text' /><button id='button_join_team' type='button'>Join</button><br />
+<input id='input_create_team' type='text' /><button id='button_create_team' type='button'>Create</button><br />
+</div>

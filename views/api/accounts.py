@@ -1,7 +1,6 @@
 import time
 
 from flask import Blueprint, request
-
 from flask_login import login_user, login_required, logout_user, current_user
 from bson.objectid import ObjectId
 
@@ -43,7 +42,7 @@ def register(**params):
 def public_register():
     return register(**tools.general.unpack_request_data(**request.form))
 
-def register_team(user_id, **params):
+def create_team(user_id, **params):
     params_check = tools.api.check_params(['name'], **params)
     if not params_check['success']:
         return params_check['result']
@@ -67,13 +66,13 @@ def register_team(user_id, **params):
     })
     users = tools.db.open_collection('users')
     users.update({'_id': ObjectId(user_id)}, {'$set': {'teams.%s' % config.platform.CTF_NAME: user_id}})
-    return tools.api.gen_result_success({'team_id': user_id})
+    return tools.api.gen_result_success({'team_id': user_id}, message='Team created!')
 
-@app.route('/api/accounts/register_team', methods=['POST'])
+@app.route('/api/accounts/create_team', methods=['POST'])
 @login_required
 @tools.api.response
-def public_register_team():
-    return register_team(current_user.id, **tools.general.unpack_request_data(**request.form))
+def public_create_team():
+    return create_team(current_user.id, **tools.general.unpack_request_data(**request.form))
 
 def join_team(user_id, **params):
     params_check = tools.api.check_params(['name'], **params)
@@ -94,7 +93,7 @@ def join_team(user_id, **params):
         return tools.api.gen_result_fail('Team full!')
     teams.update({'_id': team_id}, {'$push': {'members': user_id}})
     users.update({'_id': ObjectId(user_id)}, {'$set': {'teams.%s' % config.platform.CTF_NAME: team_id}})
-    return tools.api.gen_result_success({'team_id': team_id})
+    return tools.api.gen_result_success({'team_id': team_id}, message='Joined team!')
 
 @app.route('/api/accounts/join_team', methods=['POST'])
 @login_required

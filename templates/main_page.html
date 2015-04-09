@@ -43,7 +43,7 @@
 {%- block navbar_unauthed_home -%}#{% endblock %}
 {% block content %}
     <div id="banner" class="center">
-        <div id="ctf_name" class="bigtext">chaosCTF</div>
+        <div id="ctf_name" class="bigtext">{{ g.ctf_name }}</div>
         <div id="registered_teams" class="mediumtext">Registered Teams: {{ team_count }}</div>
     </div>
 {% endblock %}

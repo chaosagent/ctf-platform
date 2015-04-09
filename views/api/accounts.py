@@ -128,3 +128,24 @@ def logout():
 @tools.api.response
 def public_logout():
     return logout()
+
+def which_team(**params):
+    params_check = tools.api.check_params(['identifier'], **params)
+    if not params_check['success']:
+        return params_check['result']
+    identifier = params['identifier']
+    team = tools.db.load_user_from_identifier(identifier).get_team()
+    if team is not None:
+        return tools.api.gen_result_success({
+            'user_in_team': True,
+            'team': tools.db.get_team(team)['name']
+        })
+    else:
+        return tools.api.gen_result_success({
+            'user_in_team': False
+        })
+
+@app.route('/api/accounts/which_team', methods=['GET', 'POST'])
+@tools.api.response
+def public_which_team():
+    return which_team(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))

@@ -3,10 +3,12 @@
 $(document).ready(function () {
     $('.submit_flag_button').click(function () {
         var button = $(this);
+        var flag_input = $(this).siblings('.flag_input')
         $.post('{{ url_for('api_problems.public_submit_solution') }}', {
             'problem_id': $(this).siblings('.problem_id').html(),
-            'flag': $(this).siblings('.flag_input').val()
+            'flag': flag_input.val()
         }, function(data) {
+            flag_input.val('');
             message = button.siblings('.message');
             if (!data.success) {
                 message.html(data.message);

@@ -1,38 +1,49 @@
-<script src='//code.jquery.com/jquery-1.11.2.min.js'></script>
-<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300' rel='stylesheet' type='text/css'>
-<style>
-    body, html {
-        margin: 0;
-    }
-    div.center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-    div.bigtext {
-        font-size: 10em;
-        font-family: 'Roboto Slab', serif;
-        font-weight: 300;
-    }
-    div.mediumtext {
-        font-size: 1em;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 300;
-    }
-</style>
-<script type='text/javascript'>
+{%- extends "frame.html" -%}
+{%- block head -%}
+    {{ super() }}
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto+Slab:300" rel="stylesheet" type="text/css">
+    <style>
+        div.bigtext {
+            font-size: 10em;
+            font-family: "Roboto Slab", serif;
+            font-weight: 300;
+        }
+        div.mediumtext {
+            font-size: 1em;
+            font-family: "Roboto", sans-serif;
+            font-weight: 300;
+        }
+        div#banner {
+            /* Background pattern from subtlepatterns.com */
+            background-image: url("{{ url_for('static', filename='darth_stripe.png') }}");
+            background-repeat: repeat;
+        }
+        div#ctf_name {
+            color: #d8d8d8;
+        }
+        div#registered_teams {
+            color: #ccc;
+        }
+    </style>
+<script type="text/javascript">
 	$(document).ready(function() {
 		viewportheight = $(window).height();
-		$('#content').height(viewportheight);
+		navbarheight = $('#navbarplaceholder').height();
+		$('#banner').height(viewportheight - navbarheight);
 		$(window).resize(function() {
 			viewportheight = $(window).height();
-			$('#content').height(viewportheight);
+			$('#banner').height(viewportheight - navbarheight);
 		});
 	});
 </script>
-<div id='content' class='center'>
-    <div class='bigtext'>chaosCTF</div>
-    <div class='mediumtext'>Registered Teams: {{ team_count }}</div>
-</div>
+{%- endblock -%}
+{%- block title -%}Homepage{% endblock %}
+{%- block navbar_unauthed_home -%}#{% endblock %}
+{%- block content -%}
+    <div id="banner" class="center">
+        <div id="ctf_name" class="bigtext">chaosCTF</div>
+        <div id="registered_teams" class="mediumtext">Registered Teams: {{ team_count }}</div>
+    </div>
+{% endblock %}

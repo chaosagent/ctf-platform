@@ -10,6 +10,10 @@ $(document).ready(function () {
             } else {
                 $('#message').css('background-color', '#ff0000');
             }
+            setTimeout(function () {
+                $('#message').html('');
+                $('#message').css('background-color', '');
+            }, 1000);
         });
     });
 });

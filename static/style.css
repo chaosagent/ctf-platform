@@ -31,6 +31,10 @@ li.navbar {
     float: left;
     height: 100%;
 }
+li.navbar > a.selected {
+    background-color: #484848;
+	color: #f8f8f8;
+}
 a.navbar:link, a.navbar:visited {
 	text-decoration: none;
 	display: flex;
@@ -41,8 +45,7 @@ a.navbar:link, a.navbar:visited {
 	color: #d8d8d8;
 }
 a.navbar:hover, a.navbar:active {
-	background-color: #444;
-	color: #f8f8f8;
+	background-color: #383838;
 }
 .placeholder {
 	z-index:-1;

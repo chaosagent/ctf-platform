@@ -1,12 +1,30 @@
 {%- extends "frame.html" -%}
 {%- block head -%}
     {{ super() }}
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <style>
+        div#content {
+            /* Background pattern from subtlepatterns.com */
+            background-image: url("{{ url_for('static', filename='darth_stripe.png') }}");
+            background-repeat: repeat;
+            color: #d8d8d8;
+        }
         .bigtext {
             font-size: 5em;
             text-align: center;
         }
     </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            viewportheight = $(window).height();
+            navbarheight = $('#navbarplaceholder').height();
+            $('#inner_content').height(viewportheight - navbarheight);
+            $(window).resize(function() {
+                viewportheight = $(window).height();
+                $('#inner_content').height(viewportheight - navbarheight);
+            });
+        });
+    </script>
 {% endblock %}
 {%- block title -%}
 {%- if not g.competition_started -%}
@@ -18,7 +36,7 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-    <div class="bigtext">
+    <div id="inner_content" class="bigtext center">
         {%- if not g.competition_started -%}
             Competition has not begun yet!
         {%- elif g.competition_ended -%}

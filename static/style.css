@@ -65,6 +65,6 @@ div.center {
 .inline {
     display: inline;
 }
-div.content {
+div#content {
     margin: 0;
 }

@@ -106,7 +106,7 @@ def get_scores_list():
     teams_collection = open_collection('teams')
     teams = []
     for team in teams_collection.find():
-        teams.append((team['name'], team['score'], team['last_solve_time']))
+        teams.append((team['name'], team['score'], team['last_solve_time'], len(team['members'])))
     teams = sorted(teams, key=lambda x: (-x[1], x[2]))
     result = []
     for team in teams:
@@ -114,6 +114,7 @@ def get_scores_list():
         team_info['name'] = team[0]
         team_info['score'] = team[1]
         team_info['last_solve_time'] = team[2]
+        team_info['members'] = team[3]
         result.append(team_info)
     return result
 

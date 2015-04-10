@@ -21,7 +21,7 @@ def team_count(min_score=0):
     try:
         min_score = int(min_score)
     except ValueError:
-        return tools.api.gen_result_fail('ID not an integer')
+        return tools.api.gen_result_fail('min_score not an integer')
     return tools.api.gen_result_success({'count': tools.db.get_team_count(min_score)})
 
 @app.route('/api/stats/team_count', methods=['GET', 'POST'])

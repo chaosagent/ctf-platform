@@ -14,17 +14,19 @@
         <div id="navbarlist">
             <ul id="navbarlist_left" class="navbar inline">
                 <li class="navbar"><a class="navbar {% if g.current_page == 'main' %}selected{% endif %}" href="{%- if g.current_page != 'main' -%}{{ url_for('page_main.page_main') }}{% else %}#{% endif %}">Home</a></li>
+                {% if g.competition_started %}
                 <li class="navbar"><a class="navbar {% if g.current_page == 'scoreboard' %}selected{% endif %}" href="{%- if g.current_page != 'scoreboard' -%}{{ url_for('page_scoreboard.page_scoreboard') }}{% else %}#{% endif %}">Scoreboard</a></li>
                 {% if g.show_problems_unauthed or g.authed %}
                 <li class="navbar"><a class="navbar {% if g.current_page == 'problems' %}selected{% endif %}" href="{%- if g.current_page != 'problems' -%}{{ url_for('page_problems.page_problems') }}{% else %}#{% endif %}">Problems</a></li>
+                {% endif %}
                 {% endif %}
             </ul>
             <ul id="navbarlist_right" class="navbar inline right">
                 {% if g.authed %}
                 <li class="navbar"><a class="navbar {% if g.current_page == 'logout' %}selected{% endif %}" href="{%- if g.current_page != 'logout' -%}{{ url_for('page_logout.page_logout') }}{% else %}#{% endif %}">Logout</a></li>
                 {% else %}
-                <li class="navbar"><a class="navbar {% if g.current_page == 'login' %}selected{% endif %}" href="{%- if g.current_page != 'login' -%}{{ url_for('page_login.page_login') }}{% else %}#{% endif %}">Login</a></li>
                 <li class="navbar"><a class="navbar {% if g.current_page == 'register' %}selected{% endif %}" href="{%- if g.current_page != 'register' -%}{{ url_for('page_register.page_register') }}{% else %}#{% endif %}">Register</a></li>
+                <li class="navbar"><a class="navbar {% if g.current_page == 'login' %}selected{% endif %}" href="{%- if g.current_page != 'login' -%}{{ url_for('page_login.page_login') }}{% else %}#{% endif %}">Login</a></li>
                 {% endif %}
             </ul>
         </div>

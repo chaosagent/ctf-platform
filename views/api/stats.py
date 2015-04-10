@@ -29,7 +29,6 @@ def team_count(min_score=0):
 def public_team_count():
     return team_count(**tools.general.unpack_request_data(**(request.args if request.method == 'GET' else request.form)))
 
-@tools.api.competition_started_required
 def get_score_data(**params):
     params_check = tools.api.check_params(['team'], **params)
     if not params_check['success']:

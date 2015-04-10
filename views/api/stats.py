@@ -8,7 +8,6 @@ import tools
 
 app = Blueprint('api_stats', __name__)
 
-@tools.api.competition_started_required
 def scoreboard():
     return tools.api.gen_result_success(tools.db.get_scores_list())
 

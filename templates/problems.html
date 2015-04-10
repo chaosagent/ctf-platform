@@ -1,7 +1,23 @@
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function () {
-    $('.submit_flag_button').click(function () {
+$(document).ready(function() {
+    $('.flag_input').keyup(function(event){
+        if(event.keyCode == 13){
+            $(this).siblings('.submit_flag_button').click();
+        }
+    });
+    function clear_message(message_box) {
+        message_box.html('');
+        message_box.css('background-color', '');
+    }
+    function show_message(message_box, message, color) {
+        message_box.html(message);
+        message_box.css('background-color', color);
+        setTimeout(function() {
+            clear_message(message_box)
+        }, 1000);
+    }
+    $('.submit_flag_button').click(function() {
         var button = $(this);
         var flag_input = $(this).siblings('.flag_input')
         if (flag_input.val() === '') {
@@ -12,22 +28,16 @@ $(document).ready(function () {
             'flag': flag_input.val()
         }, function(data) {
             flag_input.val('');
-            message = button.siblings('.message');
+            message_box = button.siblings('.message');
             if (!data.success) {
-                message.html(data.message);
-                message.css('background-color', '#ff0000');
+                show_message(message_box, data.message, '#f00');
             } else {
-                message.html(data.data.message);
                 if (data.data.points_awarded > 0) {
-                    message.css('background-color', '#00ff00');
+                    show_message(message_box, data.data.message, '#0f0');
                 } else {
-                    message.css('background-color', '#ff0000');
+                    show_message(message_box, data.data.message, '#f00');
                 }
             }
-            setTimeout(function () {
-                message.html('');
-                message.css('background-color', '');
-            }, 1000);
         });
     });
 });

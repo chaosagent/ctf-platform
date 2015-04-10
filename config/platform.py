@@ -6,7 +6,7 @@ MAX_TEAM_SIZE = 5
 COMPETITION_START_TIME = 0
 COMPETITION_END_TIME = 10**15
 # Only GUI for now
-# TODO: seperate options for GUI and API
+# TODO: separate options for GUI and API
 PROBLEMS_AVAILABLE_WITHOUT_LOGIN = True
 
 MESSAGE_CORRECT_ANSWER = 'Correct!'

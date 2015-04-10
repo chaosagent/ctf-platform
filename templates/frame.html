@@ -14,8 +14,8 @@
         <div id="navbarlist">
             <ul id="navbarlist_left" class="navbar inline">
                 <li class="navbar"><a class="navbar {% if g.current_page == 'main' %}selected{% endif %}" href="{%- if g.current_page != 'main' -%}{{ url_for('page_main.page_main') }}{% else %}#{% endif %}">Home</a></li>
-                {% if g.competition_started %}
                 <li class="navbar"><a class="navbar {% if g.current_page == 'scoreboard' %}selected{% endif %}" href="{%- if g.current_page != 'scoreboard' -%}{{ url_for('page_scoreboard.page_scoreboard') }}{% else %}#{% endif %}">Scoreboard</a></li>
+                {% if g.competition_started %}
                 {% if g.show_problems_unauthed or g.authed %}
                 <li class="navbar"><a class="navbar {% if g.current_page == 'problems' %}selected{% endif %}" href="{%- if g.current_page != 'problems' -%}{{ url_for('page_problems.page_problems') }}{% else %}#{% endif %}">Problems</a></li>
                 {% endif %}

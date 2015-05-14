@@ -37,11 +37,12 @@ def get_score_data(**params):
         return tools.api.gen_result_fail('Team does not exist!')
     tools.db.refresh_score(team['_id'])
     result = OrderedDict()
-    solved_problems = []
+    solved_problems = {}
     for i in xrange(len(problems.problems)):
         if problems.problems[i]['enabled'] and str(problems.problems[i]['id']) in team['solved_problems'] and \
-                team['solved_problems'][str(problems.problems[i]['id'])]:
-            solved_problems.append(problems.problems[i]['name'])
+                team['solved_problems'][str(problems.problems[i]['id'])]['solved']:
+            solved_problems[str(problems.problems[i]['id'])] = {'name': problems.problems[i]['name'],
+                                         'solved_time': team['solved_problems'][str(problems.problems[i]['id'])]['solved_time']}
     result['score'] = team['score']
     result['solved'] = solved_problems
     return tools.api.gen_result_success(result)

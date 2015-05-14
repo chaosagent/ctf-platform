@@ -25,7 +25,7 @@ def set_up_db():
 
 def wipe_database():
     db.drop_collection('users')
-    db.db.drop_collection('teams')
+    db.drop_collection('teams')
     pass
 
 def register_blueprints():
@@ -56,11 +56,11 @@ def set_up_jinja():
 
 if __name__ == '__main__':
     handle_args()
-    set_up_db()
     if args.wipe_db:
         wipe_database()
     if args.debug:
         app.debug = True
+    set_up_db()
     register_blueprints()
     set_up_login_manager()
     set_up_jinja()

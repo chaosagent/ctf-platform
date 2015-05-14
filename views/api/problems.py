@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import time
 
 from flask import Blueprint, request
 from flask_login import login_required, current_user
@@ -83,7 +84,10 @@ def submit_solution(team_id, **params):
             result['points_awarded'] = 0
             result['message'] = config.MESSAGE_ALREADY_SOLVED
         else:
-            teams.update({'_id': team_id}, {'$set': {'solved_problems.%s' % str(problem_id): True}})
+            current_time = time.time()
+            teams.update({'_id': team_id}, {'$set': {'last_solve_time': current_time,
+                                                     'solved_problems.%s.solved' % str(problem_id): True,
+                                                     'solved_problems.%s.solved_time' % str(problem_id): current_time}})
             tools.db.refresh_score(team_id)
             result['points_awarded'] = problem['value']
             result['message'] = config.MESSAGE_CORRECT_ANSWER

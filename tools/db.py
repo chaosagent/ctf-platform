@@ -82,12 +82,18 @@ def refresh_score(team_id, db=None):
     team = teams.find_one({'_id': team_id})
     original_score = team['score']
     score = 0
-    for (problem_id, problem_solved) in dict(team['solved_problems']).iteritems():
+    original_last_solve_time = team['last_solve_time']
+    last_solve_time = -1
+    for (problem_id, problem_solved_data) in dict(team['solved_problems']).iteritems():
         problem = get_problem(int(problem_id))
-        if problem is not None and problem['enabled'] and team['solved_problems'][problem_id]:
-            score += get_problem(int(problem_id))['value']
+        if problem is not None and problem['enabled'] and problem_solved_data['solved']:
+            score += problem['value']
+            if problem_solved_data['solved_time'] > last_solve_time:
+                last_solve_time = problem_solved_data['solved_time']
     if score != original_score:
         teams.update({'_id': team_id}, {'$set': {'score': score}})
+    if original_last_solve_time == last_solve_time:
+        teams.update({'_id': team_id}, {'$set': {'last_solve_time': last_solve_time}})
 
 def get_team_from_name(name):
     return open_collection('teams').find_one({'name': name})
